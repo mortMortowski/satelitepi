@@ -1,0 +1,15 @@
+{
+"url": "https://celestrak.org/NORAD/elements/weather.txt",
+"tle_file": "data/tle.txt",
+"latitude": "51.0671",
+"longitude": "-15.3723",
+"altitude": 650,
+"satellites": 
+    [
+        {"name": "NOAA 15", "record": true}, 
+        {"name": "NOAA 18", "record": true}, 
+        {"name": "NOAA 19", "record": true}, 
+        {"name": "METEOR-M2 3", "record": false}, 
+        {"name": "METEOR-M2 4", "record": false}
+    ]
+}
