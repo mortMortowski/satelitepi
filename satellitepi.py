@@ -1,4 +1,4 @@
-# imports
+# Imports
 import requests
 import os
 import predict
@@ -12,40 +12,51 @@ import asyncio
 import sys
 from datetime import datetime
 
+# Global variables
+
+url = "https://celestrak.org/NORAD/elements/weather.txt"
+tle_file = "data/tle.txt"
+qth = ('51.0671', '-15.3723', 650)
+NOAA15 = True
+NOAA18 = True
+NOAA19 = True
+METEOR3 = False
+METEOR4 = False
+
+# Functions
+
 def load_settings():
     with open("data/settings.json", "r", encoding="utf-8") as file:
         settings_new = json.load(file)
+        
+    if not isinstance(settings_new, dict):
+        raise ValueError("Settings file must contain a JSON object")
+    
     return settings_new
 
-# global variables
+def init_var():
+    global url, tle_file, qth, NOAA15, NOAA18, NOAA19, METEOR3, METEOR4
+    if settings:
+        print("Settings loaded succesfully")
+        url = settings.get("url")
+        tle_file = settings.get("tle_file")
+        latitude = settings.get("latitude")
+        longitude = settings.get("longitude")
+        altitude = settings.get("altitude")
+        qth = (latitude, longitude, altitude)
+        NOAA15 = settings.get("satellites")[0].get("record")
+        NOAA18 = settings.get("satellites")[1].get("record")
+        NOAA19 = settings.get("satellites")[2].get("record")
+        METEOR3 = settings.get("satellites")[3].get("record")
+        METEOR4 = settings.get("satellites")[4].get("record")
+        if (NOAA15 == False and NOAA18 == False and NOAA19 == False and METEOR3 == False and METEOR4 == False):
+            print("No satellites selected. Enabling NOAA15 detection so at least one satellite can be recorded.")
+            NOAA15 = True
+    else:
+        print("Couldn't load settings, using default options")
+           
 settings = load_settings()
-
-if settings:
-    print("Settings loaded succesfully")
-    url = settings.get("url")
-    tle_file = settings.get("tile_file")
-    latitude = settings.get("latitude")
-    longitude = settings.get("longitude")
-    altitude = settings.get("altitude")
-    qth = (latitude, longitude, altitude)
-    NOAA15 = settings.get("satellites")[0].get("record")
-    NOAA18 = settings.get("satellites")[1].get("record")
-    NOAA19 = settings.get("satellites")[2].get("record")
-    METEOR3 = settings.get("satellites")[3].get("record")
-    METEOR4 = settings.get("satellites")[4].get("record")
-    if (NOAA15 == False and NOAA18 == False and NOAA19 == False and METEOR3 == False and METEOR4 == False):
-        print("No satellites selected. Enabling NOAA15 detection so at least one satellite can be recorded.")
-        NOAA15 = True
-else:
-    print("Couldn't load settings, using default options")
-    url = "https://celestrak.org/NORAD/elements/weather.txt"
-    tle_file = "data/tle.txt"
-    qth = ('51.0671', '-15.3723', 650)
-    NOAA15 = True
-    NOAA18 = True
-    NOAA19 = True
-    METEOR3 = False
-    METEOR4 = False
+init_var()
 
 # INDIVIDUAL TLE DATA
 tleNOAA15 = """{0}
@@ -341,20 +352,39 @@ async def upload_data(image_path):
             print("Error: ", e)
             
 def save_setting(setting, value):
-    global settings
+    # Load the JSON file
     with open("data/settings.json", "r", encoding="utf-8") as file:
-        data = json.load(file)
+        obj = json.load(file)
         
-    for obj in data:
-        if (setting in obj):
-            obj[setting] = value
+    # Handling nested settings
+        
+    if isinstance(setting, str) and "[" in setting and "]" in setting:
+       keys = setting.split(".")
+       current = obj
+       for key in keys[:-1]:
+           if "[" in key and "]" in key:
+              list_key, index = key[:-1].split("[")
+              index = int(index)
+              current = current[list_key][index]
+           else:
+               current = current[key]
+            
+       final_key = keys[-1]
+       current[final_key] = value
+    else:
+        # Update flat setting
+        obj[setting] = value
+    
+    # Save the file
             
     with open("data/settings.json", "w", encoding="utf-8") as file:
-        json.dump(data, file)
+        json.dump(obj, file, indent=4)
         
     print("Setting saved successfully!")
     
+    global settings
     settings = load_settings()
+    init_var()
 
 def settings_func():
     #update settings
@@ -413,34 +443,34 @@ def settings_func():
             save_setting("altitude", new_setting)
             
     elif (selected == "6"):
-        if (settings.get("satellites")[0].get("record") == "true"):
-            save_setting("satellites[0].record", "false")
+        if (settings.get("satellites")[0].get("record") == True):
+            save_setting("satellites[0].record", False)
         else:
-            save_setting("satellites[0].record", "true")
+            save_setting("satellites[0].record", True)
             
     elif (selected == "7"):
-        if (settings.get("satellites")[1].get("record") == "true"):
-            save_setting("satellites[1].record", "false")
+        if (settings.get("satellites")[1].get("record") == True):
+            save_setting("satellites[1].record", False)
         else:
-            save_setting("satellites[1].record", "true")
+            save_setting("satellites[1].record", True)
                 
     elif (selected == "8"):
-        if (settings.get("satellites")[2].get("record") == "true"):
-            save_setting("satellites[2].record", "false")
+        if (settings.get("satellites")[2].get("record") == True):
+            save_setting("satellites[2].record", False)
         else:
-            save_setting("satellites[2].record", "true")
+            save_setting("satellites[2].record", True)
             
     elif (selected == "9"):
-        if (settings.get("satellites")[3].get("record") == "true"):
-            save_setting("satellites[3].record", "false")
+        if (settings.get("satellites")[3].get("record") == True):
+            save_setting("satellites[3].record", False)
         else:
-            save_setting("satellites[3].record", "true")
+            save_setting("satellites[3].record", True)
             
     elif (selected == "10"):
-        if (settings.get("satellites")[4].get("record") == "true"):
-            save_setting("satellites[4].record", "false")
+        if (settings.get("satellites")[4].get("record") == True):
+            save_setting("satellites[4].record", False)
         else:
-            save_setting("satellites[4].record", "true")
+            save_setting("satellites[4].record", True)
             
     else:
         print("Invalid option")
