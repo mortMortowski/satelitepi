@@ -1,46 +1,159 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Satellitepi recent images</title>
+		<title>Images from SatellitePi</title>
 		<link rel="stylesheet" href="styles.css">
 		<meta charset="utf-8">
 		<meta name="keywords" content="satellitepi, noaa, images">
 		<meta name="author" content="Maciej Bajer">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="/styles.css">
+		<link rel="icon" type="image/x-icon" href="/satellite.png">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<div class="container">
 			
-			<div class="enlarged-photo">
-				<img src="" alt="enlarged photo" class="enlarged-img">
+			<div class="header">
+				<a href="/about">About the project</a>
+				<img src="/satellite.png" alt="satellite icon">
+				<a href="/" class="selected">SatellitePi</a>
 			</div>
-		
-			<h1>Recent images from Satellitepi</h1>
-			
-			<div class="images">
-				
-				<div class="img">
-					<div class="satellite-name">NOAA 15</div>
-					<img src="img/NOAA_15_2024_11_30_18:37.png" alt="noaa 15" class="satellite-img">
-					<div class="satellite-date">2024/11/30 18:37</div>
+
+			<div class="content">
+
+				<div class="latest">
+
+					<div class="latest-left">
+						<img src="img/METEOR3_2024_12_21_20_37.png" alt="latest image" class="latest-img">
+					</div>
+
+					<div class="latest-right">
+						<h2>Latest image</h2>
+						<p>Here's the latest image from SatellitePi. It was taken and captured by some satellite on some date.</p>
+						<button class="open-full">Open full image</button>
+					</div>
+
 				</div>
-				
-				<div class="img">
-					<div class="satellite-name">NOAA 18</div>
-					<img src="img/NOAA_18_2024_11_30_11:52.png" alt="noaa 18" class="satellite-img">
-					<div class="satellite-date">2024/11/30 11:52</div>
+
+				<div class="raw">
+
+					<div class="images">
+						<h1>Raw images from SatellitePi</h1>
+						<span class="total-amount"><b>1</b> total images</span>
+						<hr />
+
+						<div class="bar">
+
+							<span class="results-amount">Showing <b>1-100</b> of <b>1</b> results</span>
+
+							<div class="navigation">
+								<button class="navigate-left"><</button>
+								<input type="number" value="1" class="selected-page">
+								<span class="pages-amount">of 1</span>
+								<button class="navitate-right">></button>
+							</div>
+
+						</div>
+
+						<div class="images-list">
+
+							<div class="image">
+								<img src="img/METEOR3_2024_12_21_20_37.png" alt="satellite image">
+							</div>
+
+						</div>
+
+						<div class="bar">
+
+							<div class="navigation">
+								<button class="navigate-left"><</button>
+								<input type="number" value="1" class="selected-page">
+								<span class="pages-amount">of 1</span>
+								<button class="navitate-right">></button>
+							</div>
+	
+							<a href="#">Back to top</a>
+
+						</div>
+
+					</div>
+
+					<div class="filters">
+
+						<div class="filters-top">
+							<span>Filters</span>
+							<div class="close-filters">X</div>
+						</div>
+
+						<hr/>
+
+						<div class="filters-section">
+							<span>Sort by</span>
+							<select>
+								<option>Newest to Oldest</option>
+								<option>Oldest to Newest</option>
+							</select>
+						</div>
+
+						<div class="filters-section">
+
+							<div class="date-from">
+								<div><b>From</b></div>
+								<input type="text" placeholder="yyyy-mm-dd">
+							</div>
+	
+							<div>
+								<div><b>to</b></div>
+								<input type="text" placeholder="yyyy-mm-dd">
+							</div>
+
+						</div>
+
+						<div class="filters-section">
+
+							<div class="satellites-div">Satellites</div>
+
+							<div>
+								<input type="checkbox" id="noaa15" name="noaa15" value="noaa15" checked>
+								<label for="noaa15">NOAA 15</label>
+							</div>
+	
+							<div>
+								<input type="checkbox" id="noaa18" name="noaa18" value="noaa18" checked>
+								<label for="noaa18">NOAA 18</label>
+							</div>
+	
+							<div>
+								<input type="checkbox" id="noaa19" name="noaa19" value="noaa19" checked>
+								<label for="noaa19">NOAA 19</label>
+							</div>
+	
+							<div>
+								<input type="checkbox" id="meteor3" name="meteor3" value="meteor3" checked>
+								<label for="meteor3">Meteor-M N2-3</label>
+							</div>
+	
+							<div>
+								<input type="checkbox" id="meteor4" name="meteor4" value="meteor4" checked>
+								<label for="meteor4">Meteor-M N2-4</label>
+							</div>
+
+						</div>
+
+					</div>
+
 				</div>
-				
-				<div class="img">
-					<div class="satellite-name">NOAA 15</div>
-					<img src="img/NOAA_15_2024_11_29_19:05.png" alt="noaa 15" class="satellite-img">
-					<div class="satellite-date">2024/11/29 19:05</div>
-				</div>
-				
+
 			</div>
-			
-			<button class="more-btn">More images</button>
+
+			<div class="footer">
+				SatellitePi project &copy; 2024 <br/>
+				Made by Maciej Bajer <br/>
+				<a href="https://www.flaticon.com/free-icons/satellite" title="satellite icons">Satellite icons created by Freepik - Flaticon</a>
+			</div>
 		
 		</div>
 		

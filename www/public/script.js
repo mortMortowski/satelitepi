@@ -1,30 +1,21 @@
-const img1 = document.getElementsByClassName("satellite-img")[0];
-const img2 = document.getElementsByClassName("satellite-img")[1];
-const img3 = document.getElementsByClassName("satellite-img")[2];
-const photoBackground = document.getElementsByClassName("enlarged-photo")[0];
-const bigImg = document.getElementsByClassName("enlarged-img")[0];
+let latestContainer = document.getElementsByClassName("latest-img")[0];
+let imagesContainer = document.getElementsByClassName("images-list")[0];
 
-img1.addEventListener("click", () => {
-	enlargePhoto(img1);
+document.addEventListener("DOMContentLoaded", () => {
+	fetch("/api/images")
+	.then(response => response.json())
+	.then(images => {
+		latestContainer.src = "img/" + images[0];
+		let imagesCount = images.length;
+		for(let i=1; i < imagesCount; i++){
+			let imageDiv = document.createElement("div");
+			imageDiv.classList.add("image");
+			let imageImg = document.createElement("img");
+			imageImg.src = "img/" + images[i];
+			imageImg.alt = "satellite image";
+			imageDiv.appendChild(imageImg);
+			imagesContainer.appendChild(imageDiv);
+		}
+	})
+	.catch(error => console.error("Error fetching images:",error));
 });
-
-img2.addEventListener("click", () => {
-	enlargePhoto(img2);
-});
-
-img3.addEventListener("click", () => {
-	enlargePhoto(img3);
-});
-
-photoBackground.addEventListener("click", () => {
-	hideBackground();
-});
-
-function enlargePhoto(photo){
-	photoBackground.style.display = "block";
-	bigImg.src = photo.src;
-}
-
-function hideBackground(){
-	photoBackground.style.display = "none";
-}
